@@ -39,14 +39,14 @@ public class TechnicalServiceImpl implements TechnicalService {
     @Override
     public ResponseDTO<TechnicalDAO> save(TechnicalDAO technicalDAO) {
         TechnicalDAO technical = technicalRepository.findByDniAndActiveTrue(technicalDAO.getDni());
-        if (Objects.nonNull(technical)){
-            if (technical.getDni().equals(technicalDAO.getDni())){
-                return ResponseDTO.<TechnicalDAO>builder()
-                        .success(Boolean.FALSE)
-                        .error("El técnico ya existe")
-                        .build();
-            }
+
+        if (Objects.nonNull(technical) && technical.getDni().equals(technicalDAO.getDni())) {
+            return ResponseDTO.<TechnicalDAO>builder()
+                    .success(Boolean.FALSE)
+                    .error("El técnico ya existe")
+                    .build();
         }
+
         TechnicalDAO technicalSave = technicalRepository.save(technicalDAO);
 
         return ResponseDTO.<TechnicalDAO>builder()
@@ -59,7 +59,7 @@ public class TechnicalServiceImpl implements TechnicalService {
     @Override
     public ResponseDTO<TechnicalDAO> search(Long id) {
         Optional<TechnicalDAO> salida = technicalRepository.findById(id);
-        if (!salida.isPresent()){
+        if (!salida.isPresent()) {
             return ResponseDTO.<TechnicalDAO>builder()
                     .success(Boolean.FALSE)
                     .error("No se existe un Technical con el ID: " + id)
@@ -67,7 +67,6 @@ public class TechnicalServiceImpl implements TechnicalService {
         }
         return ResponseDTO.<TechnicalDAO>builder().build();
     }
-
 
     @Override
     public ResponseDTO<String> desactivar(Long id) {
