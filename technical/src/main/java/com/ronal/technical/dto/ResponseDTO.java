@@ -12,5 +12,5 @@ public class ResponseDTO<T> {
     private String error;
     private String message;
     private T response;
-    private String statusCode;
+    private Integer statusCode;
 }
